@@ -1,1 +1,1 @@
-# Java Script
+# JavaScript Object Oriented Programming
