@@ -1,1 +1,1 @@
-console.log('JS OOP');
+console.log("JS OOP");
