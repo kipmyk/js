@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>String Capitalizer</title>
+</head>
+<body>
+  <label for="inputString">Enter a string:</label>
+  <input type="text" id="inputString">
+  <button onclick="capitalize()">Convert</button>
+  <div id="output"></div>
+
+  <script src="string-capitalizer.js"></script>
+  <script>
+    function capitalize() {
+      const inputString = document.getElementById("inputString").value;
+      const stringCapitalizer = new StringCapitalizer();
+      const convertedString = stringCapitalizer.capitalizeFirstLetter(inputString);
+      document.getElementById("output").textContent = convertedString;
+    }
+  </script>
+</body>
+</html>
