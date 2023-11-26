@@ -16,9 +16,9 @@ npm install
 ```
 
 <ol start="5">
-  <li>Run the Bible reader:</li>
+  <li>Run the Bible reader: <code>node bible.js</code> </li>
 </ol>
-`node bible.js`
+
 <ol start="6">
   <li>Follow the prompts to enter the book, chapter, and verse range. Examples of valid inputs:</li>
 </ol>
