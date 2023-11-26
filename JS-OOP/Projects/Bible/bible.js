@@ -25,6 +25,21 @@ class Verse {
     }
 }
 
+// Define a Bible class
+class Bible {
+    constructor() {
+        this.books = [];
+    }
+
+    addBook(book) {
+        this.books.push(book);
+    }
+
+    findBookByTitle(title) {
+        return this.books.find(book => book.title.toLowerCase() === title.toLowerCase());
+    }
+}
+
 // Function to read and parse the Bible data from the KJV file
 function readBibleFromFile(filePath) {
     const data = fs.readFileSync(filePath, 'utf-8');
@@ -32,28 +47,31 @@ function readBibleFromFile(filePath) {
 
     let currentBook;
     let currentChapter;
-    const bible = [];
+    const bible = new Bible();
 
     lines.forEach(line => {
         const parts = line.split('|');
 
         if (parts.length >= 4) {
-            const book = parts[0].trim();
-            const chapter = parseInt(parts[1]);
-            const verse = parseInt(parts[2]);
-            const text = parts.slice(3).join('|').trim();
+            const bookTitle = parts[0].trim();
+            const chapterNumber = parseInt(parts[1]);
+            const verseNumber = parseInt(parts[2]);
+            const verseText = parts.slice(3).join('|').trim();
 
-            if (!currentBook || currentBook.title.toLowerCase() !== book.toLowerCase()) {
-                currentBook = new Book(book, []);
-                bible.push(currentBook);
+            let book = bible.findBookByTitle(bookTitle);
+
+            if (!book) {
+                book = new Book(bookTitle, []);
+                bible.addBook(book);
             }
 
-            currentChapter = currentBook.chapters.find(c => c.number === chapter);
+            let chapter = book.chapters.find(c => c.number === chapterNumber);
 
-            if (!currentChapter) {
-                currentBook.chapters.push(new Chapter(chapter, [new Verse(verse, text)]));
+            if (!chapter) {
+                chapter = new Chapter(chapterNumber, [new Verse(verseNumber, verseText)]);
+                book.chapters.push(chapter);
             } else {
-                currentChapter.verses.push(new Verse(verse, text));
+                chapter.verses.push(new Verse(verseNumber, verseText));
             }
         }
     });
@@ -63,7 +81,7 @@ function readBibleFromFile(filePath) {
 
 // Function to display a specific verse or range of verses
 function displayVerseRange(bible, bookTitle, chapterNumber, startVerse, endVerse) {
-    const book = bible.find(b => b.title.toLowerCase() === bookTitle.toLowerCase());
+    const book = bible.findBookByTitle(bookTitle);
 
     if (book) {
         const chapter = book.chapters.find(c => c.number === chapterNumber);
